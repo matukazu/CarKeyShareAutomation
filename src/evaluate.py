@@ -60,7 +60,7 @@ def calc_ratio_not_assign_hope_time(times_mat):
 
         user = CarUser.get_user_instance(u_ind) # ユーザーIDに一致するユーザーインスタンスを取得する
         hope_time = user.get_use_time_hope() # 取得したユーザーインスタンスから希望時間インスタンスを取得する
-
+        ht_id = hope_time.get_id()
         # アサイン時間IDと希望時間IDが一致したかT/F判定 → ユーザーごとの判定結果をリストで保存
     # [ ]ユーザーごとの判定結果リストをもとに、Falseの割合を調べる ※全員希望と外れていたら1、全員希望通りで0になるように。
 

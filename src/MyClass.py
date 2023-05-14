@@ -12,6 +12,9 @@ class Base:
     def get_id(self):
         return self.id
 
+    def get_name(self):
+        return self.name
+
 # 車の利用者クラス
 class CarUser(Base):
     user_list = []
@@ -28,10 +31,12 @@ class CarUser(Base):
 
     @staticmethod
     def get_user_instance(user_id):
-        for user in CarUser.user_list:
-            if id(user) == user_id:
-                return user
+        ul = CarUser.user_list # ユーザーリストを掃く形で実装するとユーザーが増えたときに処理が重いのでやめた
+        if len(ul) < user_id: # ex. 5人しかいないはずなのに6人目を指定した場合×
             return None
+
+        list_ind = user_id - 1 # 配列番号は0始まりなので調整
+        return ul[list_ind]
 
     def get_use_time_hope(self):
         return self.use_time_hope
@@ -106,6 +111,13 @@ def test():
     print(f"車Ｂのカギリスト")
     for key in car_B.key_list:
         print(key.name)
+
+    print("---")
+    user = CarUser.get_user_instance(user_id=1)
+    u_name = user.get_name()
+    ht = user.get_use_time_hope()
+    ht_id = ht.get_id()
+    print(f"{u_name}の希望時間ID:{ht_id}")
 
     return
 
