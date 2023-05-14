@@ -23,9 +23,9 @@ class CarUser(Base):
 
         CarUser.user_list.append(self)
 
-    @classmethod
-    def get_user_instance(cls, user_id):
-        for user in cls.user_list:
+    @staticmethod
+    def get_user_instance(user_id):
+        for user in CarUser.user_list:
             if id(user) == user_id:
                 return user
             return None
