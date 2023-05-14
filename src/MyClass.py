@@ -9,6 +9,9 @@ class Base:
         Base.__id_counter += 1
         self.name = name
 
+    def get_id(self):
+        return self.id
+
 # 車の利用者クラス
 class CarUser(Base):
     user_list = []
@@ -29,6 +32,9 @@ class CarUser(Base):
             if id(user) == user_id:
                 return user
             return None
+
+    def get_use_time_hope(self):
+        return self.use_time_hope
 
 class Car(Base):
     def __init__(self, name, capacity):
