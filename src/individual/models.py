@@ -1,7 +1,7 @@
 import numpy as np
 
-from const import KEYS_AMOUNT, INDIV_ROW_NUM, INDIV_COLUMN_NUM, INDIV_ARR_SIZE
-from individual.utils import count_ones_by_column, count_ones_by_row
+from src.const import KEYS_AMOUNT, INDIV_ROW_NUM, INDIV_COLUMN_NUM, INDIV_ARR_SIZE
+from .utils import count_ones_by_column, count_ones_by_row
 
 def arr_to_mats(indiv_arr):
     """
