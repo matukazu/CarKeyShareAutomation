@@ -9,3 +9,7 @@ def count_ones_by_column(matrix):
 
 def count_ones_by_row(matrix):
     return np.sum(matrix, axis=1)
+
+# 値が0/1の2次元numpy配列から、値が1だったときの行列インデックスを1次元配列として返す
+def find_indices_of_ones(matrix):
+    return np.argwhere(matrix == 1)

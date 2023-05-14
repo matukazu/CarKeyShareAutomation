@@ -1,7 +1,7 @@
 import numpy as np
 
 from src.const import KEYS_AMOUNT, INDIV_ROW_NUM, INDIV_COLUMN_NUM, INDIV_ARR_SIZE
-from .utils import count_ones_by_column, count_ones_by_row
+from .utils import count_ones_by_column, count_ones_by_row, find_indices_of_ones
 
 def arr_to_mats(indiv_arr):
     """
@@ -49,6 +49,24 @@ def count_each_users(time_slots_mat):
     """
     return count_ones_by_row(time_slots_mat)
 
+def create_user_time_index_list(times_slots_mat):
+    """乗車時間帯表について、[乗車ユーザーu, 乗車時間帯t]の順で配列インデックスをリストとし
+    このリストを要素とするリストを返す
+
+    ex.)
+    Input:
+        t1  t2  t3
+    u1  [[1, 0, 0],
+    u2  [1, 0, 0]
+    u3  [0, 1, 0]]
+
+    Output:
+    [[0,0], [1,0], [2,1]]
+
+    """
+    return find_indices_of_ones(times_slots_mat)
+
+# 個体用1次元配列
 def make_sample_indiv_arr():
-    # 個体用1次元配列 要素は0か1がランダム
+    """個体用の1次元配列を作成する。要素は0か1が乱数で入る。"""
     return np.random.randint(low=0, high=2, size=INDIV_ARR_SIZE)

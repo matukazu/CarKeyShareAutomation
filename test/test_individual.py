@@ -1,10 +1,17 @@
 
 # 個体データの扱いのテスト
+# python -m test.test_individual
 
+import numpy as np
 
-import individual.models as md
+from src.individual import models as md
+# from src.individual import utils as ut
 
 def test():
+    # test_count_ones()
+    test_find_indices_of_ones()
+
+def test_count_ones():
 
     indiv_arr = md.make_sample_indiv_arr()
     keys_mat, time_slots_mat = md.arr_to_mats(indiv_arr)
@@ -27,6 +34,19 @@ def test():
     print(f"それぞれのユーザーの数:{count_each_users}")
 
     return
+
+def test_find_indices_of_ones():
+    mat = np.array([[1, 0, 0],
+                    [1, 0, 0],
+                    [0, 1, 0]])
+
+    ret = md.create_user_time_index_list(mat)
+    print(ret)
+
+    # 正解： [[0,0], [1,0], [2, 1]]
+
+    return
+
 
 if __name__ == "__main__":
     test()
