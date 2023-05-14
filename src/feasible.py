@@ -3,7 +3,7 @@
 
 import numpy as np
 
-from const import KEYS_AMOUNT, USER_AMOUNT
+from src.const import KEYS_AMOUNT, USER_AMOUNT
 import individual.models as md
 
 # TODO： 個体が理想からどれだけ離れているか、その距離を計算して返せるようになるとさらに精度UPするはず

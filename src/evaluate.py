@@ -11,7 +11,8 @@ from .individual import models as md
 
 
 
-
+# 評価関数の本体
+# 値を小さくしたいものを計算
 def evaluate(individual):
 
     keys_mat, time_slots_mat = md.arr_to_mats(individual)
@@ -44,3 +45,15 @@ def calc_distance_from_ideal_key_ave(keys_mat):
     # 理想値との差を取る
 
     return abs(average_have_key - IDEAL_KEY_AVE)
+
+# 希望乗車時間にアサインできなかった人の割合
+def calc_ratio_not_assign_hope_time():
+
+    # 時間帯表を掃いて、どのユーザーがどの時間帯にアサインしたのか調べる → (ユーザーID、アサイン時間)のリスト取得
+    # (ユーザーID、アサイン時間)のリストをForで回す
+        # ユーザーリストから、そのユーザーIDに一致するユーザーインスタンスを取得する
+        # 取得したユーザーインスタンスから希望時間IDを取得する
+        # アサイン時間IDと希望時間IDが一致したかT/F判定 → ユーザーごとの判定結果をリストで保存
+    # ユーザーごとの判定結果リストをもとに、Falseの割合を調べる ※全員希望と外れていたら1、全員希望通りで0になるように。
+
+    pass
