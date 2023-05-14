@@ -19,9 +19,16 @@ class CarUser(Base):
         self.name                      = name
         self.can_drive                 = can_drive
         self.use_time_hope             = use_time_hope
-        self.have_key                  = [] # 持っているカギリスト
+        self.having_key_list                  = [] # 持っているカギリスト
 
         CarUser.user_list.append(self)
+
+    @classmethod
+    def get_user_instance(cls, user_id):
+        for user in cls.user_list:
+            if id(user) == user_id:
+                return user
+            return None
 
 class Car(Base):
     def __init__(self, name, capacity):

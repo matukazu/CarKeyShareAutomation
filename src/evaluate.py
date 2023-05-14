@@ -5,7 +5,7 @@ import numpy as np
 
 from .const import KEYS_AMOUNT, USER_AMOUNT
 from .individual import models as md
-
+from .MyClass import CarUser
 
 
 
@@ -47,13 +47,19 @@ def calc_distance_from_ideal_key_ave(keys_mat):
     return abs(average_have_key - IDEAL_KEY_AVE)
 
 # 希望乗車時間にアサインできなかった人の割合
-def calc_ratio_not_assign_hope_time():
+def calc_ratio_not_assign_hope_time(times_mat):
 
-    # 時間帯表を掃いて、どのユーザーがどの時間帯にアサインしたのか調べる → (ユーザーID、アサイン時間)のリスト取得
-    # (ユーザーID、アサイン時間)のリストをForで回す
+    # [x]時間帯表を掃いて、どのユーザーがどの時間帯にアサインしたのか調べる → (ユーザーID、アサイン時間)のリスト取得
+    ut_list = md.create_user_time_index_list(times_mat)
+    
+    CarUser.user_list
+    # [ ](ユーザーID、アサイン時間)のリストをForで回す
+    for ut in ut_list:
+        user_index = ut[0]
+        time_index = ut[1]
         # ユーザーリストから、そのユーザーIDに一致するユーザーインスタンスを取得する
         # 取得したユーザーインスタンスから希望時間IDを取得する
         # アサイン時間IDと希望時間IDが一致したかT/F判定 → ユーザーごとの判定結果をリストで保存
-    # ユーザーごとの判定結果リストをもとに、Falseの割合を調べる ※全員希望と外れていたら1、全員希望通りで0になるように。
+    # [ ]ユーザーごとの判定結果リストをもとに、Falseの割合を調べる ※全員希望と外れていたら1、全員希望通りで0になるように。
 
-    pass
+    return
