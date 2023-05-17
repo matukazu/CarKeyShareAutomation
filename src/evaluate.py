@@ -5,7 +5,7 @@ import numpy as np
 
 from .const import KEYS_AMOUNT, USER_AMOUNT
 from .individual import models as md
-from .MyClass import CarUser
+from .MyClass import CarUser, make_hope_time_table
 
 
 
@@ -51,29 +51,17 @@ def calc_distance_from_ideal_key_ave(keys_mat):
 #   userの希望時間から、理想の乗車時間表を作って、値が一致しなかった要素数を計算する形に変更すべき
 def calc_ratio_not_assign_hope_time(times_mat):
 
-    not_equal_hope_time_list = [0] * len(CarUser.user_list)
-    # [x]時間帯表を掃いて、どのユーザーがどの時間帯にアサインしたのか調べる → (ユーザーID、アサイン時間)のリスト取得
-    ut_list = md.create_user_time_index_list(times_mat)
-    # print("---utlist---")
-    # print(ut_list)
+    hope_time_table = make_hope_time_table()
 
-    # [ ](ユーザーID、アサイン時間)のリストをForで回す
+    total_elemets = times_mat.size
+    different_elements = np.count_nonzero(times_mat != hope_time_table)
+    different_ratio = different_elements / total_elemets
 
-    for ut in ut_list:
-        u_id = ut[0] + 1
-        t_ind = ut[1]
+    return different_ratio
 
-        user = CarUser.get_user_instance(u_id) # ユーザーIDに一致するユーザーインスタンスを取得する
-        hope_time = user.get_use_time_hope() # 取得したユーザーインスタンスから希望時間インスタンスを取得する
 
-        ht_list_ind = hope_time.get_id() - 1 # 希望時間IDは1始まりだが、アサイン時間はリストであり0始まりなので調整
-        print(f"user:{u_id} \t htlistid:{ht_list_ind} \t tind:{t_ind}")
 
-        # [ ] あるユーザーがアサイン時間IDと希望時間IDが一致しなかった回数を一覧として算出
-        if (t_ind != ht_list_ind):
-            not_equal_hope_time_list[u_id - 1] += 1 # ユーザーIDは1始まり 配列は0始まりなので調整
 
-    print(not_equal_hope_time_list)
-    # [ ] 希望時間と一致しなかった回数合計 ÷ 全部希望から外れた場合(＝時間帯表の要素数) ※全員希望と外れていたら1、全員希望通りで0。
-    ratio_not_assign_hope_time = sum(not_equal_hope_time_list) / times_mat.size
-    return ratio_not_assign_hope_time
+
+
+
