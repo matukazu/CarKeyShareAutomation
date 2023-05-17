@@ -41,3 +41,17 @@ def check_users_are_only_one(time_slots_mat) -> bool:
     """
     users_counts = md.count_users_in_same_time(time_slots_mat)
     return users_counts == np.ones(USER_AMOUNT)
+
+
+
+# [ ] 時間帯ごとに乗車人数が利用する車の定員オーバーしない
+def hoge(key_mat):
+
+
+# [ ] 運転手用のカギは運転可能者しか持てない
+def hoge2(key_mat):
+    # カギ振り分け表 [乗車ユーザー、カギ]インデックスをリストとして集めたリストを取得
+    # リストをForで回す
+        # カギIndexが偶数のときのみ運転手用のカギ → カギIndex
+        # カギIndexに対応するUserIDからユーザーインスタンス取得
+        # ユーザーが運転できなかったら＋1

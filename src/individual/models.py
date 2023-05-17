@@ -66,6 +66,27 @@ def create_user_time_index_list(times_slots_mat):
     """
     return find_indices_of_ones(times_slots_mat)
 
+def create_user_key_index_list(key_mat):
+    """カギ振り分け表について、[乗車ユーザーu, カギt]の順で配列インデックスをリストとし
+    このリストを要素とするリストを返す
+
+    ex.)
+    Input:
+        k1  k2  k3 k4
+    u1  [[1, 0, 0, 0],
+    u2  [0, 0, 1, 0]
+    u3  [0, 1, 0, 0]
+    u4  [0, 0, 0, 1]]
+
+    Output:
+    [[0,0], [1,2], [2,1], [3,3]]
+
+    """
+    return find_indices_of_ones(key_mat)
+
+
+
+
 # 個体用1次元配列
 def make_sample_indiv_arr():
     """個体用の1次元配列を作成する。要素は0か1が乱数で入る。"""
