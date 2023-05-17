@@ -18,15 +18,22 @@ def evaluate(individual):
     keys_mat, time_slots_mat = md.arr_to_mats(individual)
 
     # 優先度 高い
-    # [ ] ユーザーの希望乗車時間帯と同じ
+    # ユーザーの希望乗車時間帯と同じ
+    how_not_assign_hope_time = calc_ratio_not_assign_hope_time(time_slots_mat)
 
     # 優先度 低い
     # カギは1人2つ以上持たない
     how_far_from_ideal_having_key = calc_distance_from_ideal_key_ave(keys_mat)
 
     # [ ] 同じ時間帯を希望する人が、その時間帯に使う車の予備カギを持つ
+    # TODO: 優先順位低いので割愛 プロトタイプが出来たら追加する
 
-    return 0
+    eval_list = [
+        how_not_assign_hope_time,
+        how_far_from_ideal_having_key
+    ]
+
+    return eval_list
 
 def calc_distance_from_ideal_key_ave(keys_mat):
     """カギを持っている人たちを対象とした所持数の平均値から理想値である１までの差を算出する"""
