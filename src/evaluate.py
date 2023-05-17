@@ -46,11 +46,9 @@ def calc_distance_from_ideal_key_ave(keys_mat):
 
     return abs(average_have_key - IDEAL_KEY_AVE)
 
-# 希望乗車時間にアサインできなかった人の割合
-# FIX: 希望時間以外にアサインした場合は計算できているが、希望時間にアサインできていない場合が計算出来ていない
-#   userの希望時間から、理想の乗車時間表を作って、値が一致しなかった要素数を計算する形に変更すべき
 def calc_ratio_not_assign_hope_time(times_mat):
-
+    """希望乗車時間にアサイン出来なかった人の割合を計算する。
+    希望する乗車時間帯表と個体から生成した乗車時間帯表を比べて、異なっている割合を返す。"""
     hope_time_table = make_hope_time_table()
 
     total_elemets = times_mat.size
