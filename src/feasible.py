@@ -4,7 +4,8 @@
 import numpy as np
 
 from src.const import KEYS_AMOUNT, USER_AMOUNT
-import individual.models as md
+from .individual import models as md
+from .MyClass import CarUser
 
 # TODO： 個体が理想からどれだけ離れているか、その距離を計算して返せるようになるとさらに精度UPするはず
 # 例えば「それぞれカギは1つしか存在しない」を理想とすると、
@@ -46,12 +47,40 @@ def check_users_are_only_one(time_slots_mat) -> bool:
 
 # [ ] 時間帯ごとに乗車人数が利用する車の定員オーバーしない
 def hoge(key_mat):
+    return
 
-
-# [ ] 運転手用のカギは運転可能者しか持てない
+# [ ] 運転手用のカギを運転可能者以外が持っている数
+# def hoge2(key_mat):
 def hoge2(key_mat):
+    ret = 0
     # カギ振り分け表 [乗車ユーザー、カギ]インデックスをリストとして集めたリストを取得
+    uk_ind_list = md.create_user_key_index_list(key_mat)
+
+    print("カギ表")
+    print(key_mat)
+
+    print("ユーザー-カギインデックスリスト")
+    print(uk_ind_list)
+
+
+
     # リストをForで回す
+    for uk in uk_ind_list:
+        u_ind = uk[0]
+        k_ind = uk[1]
+
         # カギIndexが偶数のときのみ運転手用のカギ → カギIndex
         # カギIndexに対応するUserIDからユーザーインスタンス取得
         # ユーザーが運転できなかったら＋1
+        if k_ind % 2 == 0 :
+            u_id = u_ind + 1
+            user = CarUser.get_user_instance(user_id= u_id)
+
+            if user.get_can_drive() != True:
+                ret += 1
+
+    print("return")
+    print(ret)
+
+    return ret
+
