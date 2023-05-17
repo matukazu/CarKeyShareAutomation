@@ -1,12 +1,22 @@
 
+import numpy as np
+
+# TODO: クラスインスタンスリストを作成する機能が重複しているので、Baseクラスに統合する
+
+
 # テンプレートクラス
 # IDの自動連番機能有
 class Base:
-    __id_counter = 1
+    _id_count = {}
 
     def __init__(self, name):
-        self.id = Base.__id_counter
-        Base.__id_counter += 1
+        # 継承したクラス毎に異なるIDで1始まりの自動連番
+        cls = self.__class__
+        if cls not in Base._id_count:
+            Base._id_count[cls] = 0
+        Base._id_count[cls] += 1
+        self.id = Base._id_count[cls]
+
         self.name = name
 
     def get_id(self):
@@ -41,6 +51,9 @@ class CarUser(Base):
     def get_use_time_hope(self):
         return self.use_time_hope
 
+
+
+
 class Car(Base):
     def __init__(self, name, capacity):
         super().__init__(name)
@@ -62,11 +75,39 @@ class CarKey(Base):
 
 
 class CarUseTime(Base):
+    car_use_time_list = []
+
     def __init__(self, name):
         super().__init__(name) # 名前=時間帯の識別用 (例：18時、乗らない など)
 
         self.users_hope   = [] # この時間帯を希望するユーザー
         self.users_actual = [] # 実際この時間帯に使うユーザー
+
+        CarUseTime.car_use_time_list.append(self)
+
+
+# ユーザーのリスト、カギのリストを元にユーザーが希望する理想の乗車時間体表を作成する
+def make_hope_time_table():
+    user_count = len(CarUser.user_list)
+    time_count = len(CarUseTime.car_use_time_list)
+    ret_mat = np.zeros((user_count, time_count)) # 初期化
+
+    print(ret_mat)
+
+
+    for user in CarUser.user_list:
+        hope_time = user.get_use_time_hope()
+        if hope_time is not None:
+            user_id = user.get_id() - 1
+            time_id = hope_time.get_id() - 1
+
+            print(f"user_id:{user_id}")
+            print(f"time_id:{time_id}")
+
+            ret_mat[user_id][time_id] = 1
+
+    return ret_mat
+
 
 def test():
     time_not_use = CarUseTime("乗らない")
@@ -92,7 +133,7 @@ def test():
 
     print("車利用者リスト")
     for user in CarUser.user_list:
-        print(user.name)
+        print(f"{user.name}: {user.get_id()}")
 
     print("---")
 
@@ -118,6 +159,11 @@ def test():
     ht = user.get_use_time_hope()
     ht_id = ht.get_id()
     print(f"{u_name}の希望時間ID:{ht_id}")
+
+    print("---")
+    print("理想の希望時間表")
+    hope_time_table = make_hope_time_table()
+    print(hope_time_table)
 
     return
 
