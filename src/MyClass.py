@@ -101,9 +101,6 @@ def make_hope_time_table():
             user_id = user.get_id() - 1
             time_id = hope_time.get_id() - 1
 
-            print(f"user_id:{user_id}")
-            print(f"time_id:{time_id}")
-
             ret_mat[user_id][time_id] = 1
 
     return ret_mat
