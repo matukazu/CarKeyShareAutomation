@@ -50,6 +50,9 @@ class CarUser(Base):
 
     def get_use_time_hope(self):
         return self.use_time_hope
+    
+    def get_can_drive(self):
+        return self.can_drive
 
 
 
