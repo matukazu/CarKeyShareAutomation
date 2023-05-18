@@ -16,11 +16,11 @@ def feasible(individual):
 
     keys_mat, time_slots_mat = md.arr_to_mats(individual)
 
-    is_ideal_indiv = True
+
+    is_ideal_indiv = True # 最低満たして欲しい条件を満たす 理想個体か否か
 
     while (is_ideal_indiv == True):
-        # [ ] 運転手用のカギは運転可能者しか持てない
-
+        is_ideal_indiv = is_exist_user_cant_drive_having_driving_key(keys_mat) # 運転可能者以外が運転用カギを持っていないか
         # [ ] 時間帯ごとに乗車人数が利用する車の定員オーバーしない
 
         is_ideal_indiv = check_keys_are_only_one(keys_mat) # それぞれカギは1つだけになっているか
@@ -49,20 +49,12 @@ def check_users_are_only_one(time_slots_mat) -> bool:
 def hoge(key_mat):
     return
 
-# [ ] 運転手用のカギを運転可能者以外が持っている数
-# def hoge2(key_mat):
-def hoge2(key_mat):
-    ret = 0
+def is_exist_user_cant_drive_having_driving_key(key_mat):
+    """運転できないユーザーが運転用カギを持っているか否かを判定して返す"""
+    key_count_held_by_user_cant_drive = 0 # 運転手用のカギを運転可能者以外が持っている数
+
     # カギ振り分け表 [乗車ユーザー、カギ]インデックスをリストとして集めたリストを取得
     uk_ind_list = md.create_user_key_index_list(key_mat)
-
-    print("カギ表")
-    print(key_mat)
-
-    print("ユーザー-カギインデックスリスト")
-    print(uk_ind_list)
-
-
 
     # リストをForで回す
     for uk in uk_ind_list:
@@ -77,10 +69,7 @@ def hoge2(key_mat):
             user = CarUser.get_user_instance(user_id= u_id)
 
             if user.get_can_drive() != True:
-                ret += 1
+                key_count_held_by_user_cant_drive += 1
 
-    print("return")
-    print(ret)
-
-    return ret
+    return key_count_held_by_user_cant_drive != 0
 
