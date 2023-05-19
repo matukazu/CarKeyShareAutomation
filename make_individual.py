@@ -1,4 +1,7 @@
 
+# TODO: とりあえず。後でフォルダ構成整理したら修正
+from .src.individual import models as md
+from .src.MyClass import CarUser, make_hope_time_table
 
 
 import random
@@ -6,7 +9,6 @@ import random
 
 
 # TODO:現状決め打ち。作成されたクラスインスタンス内のインスタンスリストから取得予定
-
 # 作成したい1次元表を
 initial_dict = {
     "car-time":{
@@ -74,6 +76,37 @@ def individual_to_tables_dict(indiv_arr):
         ret_dict[key] = slice_arr
 
     return ret_dict
+
+
+# 評価関数用の関数群
+# TODO: デバッグしやすいのでとりあえずここに記述
+
+def is_exist_user_cant_drive_having_driving_key(key_mat):
+    """運転できないユーザーが運転用カギを持っているか否かを判定して返す"""
+    key_count_held_by_user_cant_drive = 0 # 運転手用のカギを運転可能者以外が持っている数
+
+    # カギ振り分け表 [乗車ユーザー、カギ]インデックスをリストとして集めたリストを取得
+    uk_ind_list = md.create_user_key_index_list(key_mat)
+
+    # リストをForで回す
+    for uk in uk_ind_list:
+        u_ind = uk[0]
+        k_ind = uk[1]
+
+        # カギIndexが偶数のときのみ運転手用のカギ → カギIndex
+        # カギIndexに対応するUserIDからユーザーインスタンス取得
+        # ユーザーが運転できなかったら＋1
+        if k_ind % 2 == 0 :
+            u_id = u_ind + 1
+            user = CarUser.get_user_instance(user_id= u_id)
+
+            if user.get_can_drive() != True:
+                key_count_held_by_user_cant_drive += 1
+
+    return key_count_held_by_user_cant_drive != 0
+
+
+
 
 if __name__ == "__main__":
     indiv_arr = make_individual()

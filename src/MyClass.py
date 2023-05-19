@@ -10,10 +10,10 @@ class Base:
     _id_count = {}
 
     def __init__(self, name):
-        # 継承したクラス毎に異なるIDで1始まりの自動連番
+        # 継承したクラス毎に異なるIDで0始まりの自動連番
         cls = self.__class__
         if cls not in Base._id_count:
-            Base._id_count[cls] = 0
+            Base._id_count[cls] = -1
         Base._id_count[cls] += 1
         self.id = Base._id_count[cls]
 
