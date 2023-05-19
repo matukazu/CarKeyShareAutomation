@@ -1,7 +1,6 @@
 
 # TODO: とりあえず。後でフォルダ構成整理したら修正
-from .src.individual import models as md
-from .src.MyClass import CarUser, make_hope_time_table
+from src.MyClass import CarUser, make_hope_time_table
 
 
 import random
@@ -28,7 +27,7 @@ initial_dict = {
     "user-time":{
         "arr_total": 3,
         "elem_min": 1,
-        "elem_max": 2,
+        "elem_max": 3,
         "can_duplicate": True
     }
 }
@@ -81,29 +80,21 @@ def individual_to_tables_dict(indiv_arr):
 # 評価関数用の関数群
 # TODO: デバッグしやすいのでとりあえずここに記述
 
-def is_exist_user_cant_drive_having_driving_key(key_mat):
-    """運転できないユーザーが運転用カギを持っているか否かを判定して返す"""
-    key_count_held_by_user_cant_drive = 0 # 運転手用のカギを運転可能者以外が持っている数
+def find_total_user_cant_drive_have_driving_key(ku_arr):
+    """カギ-カギ持ち担当者の1次元配列を元に、運転できないユーザーで運転用カギを持っている人数を返す"""
+    result = 0 # 運転手用のカギを運転可能者以外が持っている数
 
-    # カギ振り分け表 [乗車ユーザー、カギ]インデックスをリストとして集めたリストを取得
-    uk_ind_list = md.create_user_key_index_list(key_mat)
-
-    # リストをForで回す
-    for uk in uk_ind_list:
-        u_ind = uk[0]
-        k_ind = uk[1]
-
+    for k_id, u_id in enumerate(ku_arr):
         # カギIndexが偶数のときのみ運転手用のカギ → カギIndex
         # カギIndexに対応するUserIDからユーザーインスタンス取得
-        # ユーザーが運転できなかったら＋1
-        if k_ind % 2 == 0 :
-            u_id = u_ind + 1
-            user = CarUser.get_user_instance(user_id= u_id)
+        if k_id % 2 == 0 :
+            user = CarUser.get_user_instance(user_id=u_id)
 
+            # ユーザーが運転できなかったら＋1
             if user.get_can_drive() != True:
-                key_count_held_by_user_cant_drive += 1
+                result += 1
 
-    return key_count_held_by_user_cant_drive != 0
+    return result
 
 
 
@@ -113,4 +104,15 @@ if __name__ == "__main__":
     print(indiv_arr)
 
     tables = individual_to_tables_dict(indiv_arr)
-    print(tables)
+
+    ct_table = tables["car-time"]
+    ku_table = tables["key-user"]
+    ut_table = tables["user-time"]
+    
+    print(f"車-時間：{ct_table}")
+    print(f"カギ-ユーザー：{ku_table}")
+    print(f"ユーザー-時間：{ut_table}")
+
+    # result = find_total_user_cant_drive_have_driving_key(ku_table)
+    # print(f"運転できないユーザーでカギ持っている数:{result}")
+
