@@ -84,10 +84,47 @@ print("最も良い個体は %sで、そのときの目的関数の値は %s" % 
 
 
 
-
+import random
 def make_individual():
-    """"ランダムな個体を生成する関数"""
-    
-    # 配列作成用 ランダム
-    user_
+    """"作成したい1次元表を元に、ランダムな個体を生成する関数"""
+
+    # TODO:現状決め打ち。作成されたクラスインスタンス内のインスタンスリストから取得予定
+
+    # 作成したい1次元表を
+    initial_dict = {
+        "car-time":{
+            "arr_total": 2,
+            "elem_min": 1,
+            "elem_max":2
+        },
+
+        "key-user":{
+            "arr_total": 4,
+            "elem_min": 1,
+            "elem_max": 4
+        },
+
+        "user-time":{
+            "arr_total": 3,
+            "elem_min": 1,
+            "elem_max": 2
+        }
+    }
+
+
+    result = []
+
+    for key, values in initial_dict.items():
+        arr_total = values["arr_total"]
+        elem_min = values["elem_min"]
+        elem_max = values["elem_max"]
+
+        # 配列を生成して結果リストに追加する
+        arr = [random.randint(elem_min, elem_max) for _ in range(arr_total)]
+        result.extend(arr)
+
+    print(result)
+    return 
+
+
 
