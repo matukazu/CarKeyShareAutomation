@@ -1,6 +1,6 @@
 
 
-
+from make_individual import make_individual
 
 
 
@@ -36,7 +36,7 @@ def obfunc(individual):
 toolbox = base.Toolbox()
 #random.uniformの別名をattribute関数として設定。各個体の遺伝子の中身を決める関数(各遺伝子は-50～50のランダムな値)
 # ランダムな個体の生成
-toolbox.register("attribute", random.uniform, -50,50)
+toolbox.register("attribute", make_individual)
 #individualという関数を設定。それぞれの個体に含まれる2個の遺伝子をattributeにより決めるよ、ということ。
 toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attribute, 2)
 #集団の個体数を設定するための関数を準備
@@ -84,47 +84,6 @@ print("最も良い個体は %sで、そのときの目的関数の値は %s" % 
 
 
 
-import random
-def make_individual():
-    """"作成したい1次元表を元に、ランダムな個体を生成する関数"""
-
-    # TODO:現状決め打ち。作成されたクラスインスタンス内のインスタンスリストから取得予定
-
-    # 作成したい1次元表を
-    initial_dict = {
-        "car-time":{
-            "arr_total": 2,
-            "elem_min": 1,
-            "elem_max":2
-        },
-
-        "key-user":{
-            "arr_total": 4,
-            "elem_min": 1,
-            "elem_max": 4
-        },
-
-        "user-time":{
-            "arr_total": 3,
-            "elem_min": 1,
-            "elem_max": 2
-        }
-    }
-
-
-    result = []
-
-    for key, values in initial_dict.items():
-        arr_total = values["arr_total"]
-        elem_min = values["elem_min"]
-        elem_max = values["elem_max"]
-
-        # 配列を生成して結果リストに追加する
-        arr = [random.randint(elem_min, elem_max) for _ in range(arr_total)]
-        result.extend(arr)
-
-    print(result)
-    return 
 
 
 

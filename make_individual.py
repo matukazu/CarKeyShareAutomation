@@ -2,37 +2,40 @@
 
 
 import random
+
+
+
+# TODO:現状決め打ち。作成されたクラスインスタンス内のインスタンスリストから取得予定
+
+# 作成したい1次元表を
+initial_dict = {
+    "car-time":{
+        "arr_total": 2,
+        "elem_min": 1,
+        "elem_max": 2,
+        "can_duplicate": False
+    },
+
+    "key-user":{
+        "arr_total": 4,
+        "elem_min": 1,
+        "elem_max": 4,
+        "can_duplicate": False
+    },
+
+    "user-time":{
+        "arr_total": 3,
+        "elem_min": 1,
+        "elem_max": 2,
+        "can_duplicate": True
+    }
+}
+
 # TODO: Jsonデータ渡せば良いだけなので、将来的にAPI化もいけるか
 def make_individual():
     """"作成したい1次元表を元に、ランダムな個体を生成する関数"""
 
-    # TODO:現状決め打ち。作成されたクラスインスタンス内のインスタンスリストから取得予定
-
-    # 作成したい1次元表を
-    initial_dict = {
-        "car-time":{
-            "arr_total": 2,
-            "elem_min": 1,
-            "elem_max": 2,
-            "can_duplicate": False
-        },
-
-        "key-user":{
-            "arr_total": 4,
-            "elem_min": 1,
-            "elem_max": 4,
-            "can_duplicate": False
-        },
-
-        "user-time":{
-            "arr_total": 3,
-            "elem_min": 1,
-            "elem_max": 2,
-            "can_duplicate": True
-        }
-    }
-
-    result = []
+    indiv_arr = []
 
     for key, values in initial_dict.items():
         arr_total = values["arr_total"]
@@ -53,11 +56,28 @@ def make_individual():
                     arr.append(num)
                     arr_set.add(num)
 
-        result.extend(arr)
+        indiv_arr.extend(arr)
 
-    return result
+    return indiv_arr
 
+
+# 個体データ配列を意味のある表に変換する
+# また、評価関数で使うために表に関わる汎用的な処理を追加する
+
+def individual_to_tables_dict(indiv_arr):
+
+    ret_dict = {}
+
+    for key, values in initial_dict.items():
+        arr_total = values["arr_total"]
+        slice_arr = indiv_arr[:arr_total]
+        ret_dict[key] = slice_arr
+
+    return ret_dict
 
 if __name__ == "__main__":
-    result = make_individual()
-    print(result)
+    indiv_arr = make_individual()
+    print(indiv_arr)
+
+    tables = individual_to_tables_dict(indiv_arr)
+    print(tables)
