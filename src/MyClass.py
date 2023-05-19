@@ -91,22 +91,15 @@ class CarUseTime(Base):
 
 # ユーザーのリスト、カギのリストを元にユーザーが希望する理想の乗車時間体表を作成する
 def make_hope_time_table():
-    user_count = len(CarUser.user_list)
-    time_count = len(CarUseTime.car_use_time_list)
-    ret_mat = np.zeros((user_count, time_count)) # 初期化
-
-    print(ret_mat)
-
+    ret_arr = []
 
     for user in CarUser.user_list:
         hope_time = user.get_use_time_hope()
         if hope_time is not None:
-            user_id = user.get_id() - 1
-            time_id = hope_time.get_id() - 1
+            time_id = hope_time.get_id()
+            ret_arr.append(time_id)
 
-            ret_mat[user_id][time_id] = 1
-
-    return ret_mat
+    return ret_arr
 
 
 def test():

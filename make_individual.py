@@ -33,6 +33,7 @@ initial_dict = {
 }
 
 # TODO: Jsonデータ渡せば良いだけなので、将来的にAPI化もいけるか
+# TODO: 個体データ作る際に元々「運転できるユーザーにしかカギを渡さない」ロジックを組み込めないか → 精度up
 def make_individual():
     """"作成したい1次元表を元に、ランダムな個体を生成する関数"""
 
@@ -96,6 +97,22 @@ def find_total_user_cant_drive_have_driving_key(ku_arr):
 
     return result
 
+def calc_ratio_not_assign_hope_time(ut_arr):
+    """希望乗車時間にアサイン出来なかった人の割合を計算する。
+    希望する乗車時間帯表と個体から生成した乗車時間帯表を比べて、異なっている割合を返す。"""
+    
+    ideal_ut_arr = make_hope_time_table()
+
+    diff_count = 0
+    for i, j in zip(ideal_ut_arr, ut_arr):
+        if i is not j:
+            diff_count += 1
+
+    total_elemets = len(ut_arr)
+
+    different_ratio = diff_count / total_elemets
+
+    return different_ratio
 
 
 
