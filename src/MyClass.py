@@ -1,6 +1,3 @@
-
-import numpy as np
-
 # TODO: クラスインスタンスリストを作成する機能が重複しているので、Baseクラスに統合する
 
 
@@ -46,7 +43,7 @@ class CarUser(Base):
             return None
 
         list_ind = user_id - 1 # 配列番号は0始まりなので調整
-        return ul[list_ind]
+        return ul[int(list_ind)]
 
     def get_use_time_hope(self):
         return self.use_time_hope
@@ -54,15 +51,16 @@ class CarUser(Base):
     def get_can_drive(self):
         return self.can_drive
 
-
-
-
 class Car(Base):
+    car_list = []
+
     def __init__(self, name, capacity):
         super().__init__(name)
 
         self.capacity = capacity
         self.key_list = []
+
+        Car.car_list.append(self)
 
 class CarKey(Base):
     key_list = [] # すべての車のカギリスト
@@ -87,79 +85,3 @@ class CarUseTime(Base):
         self.users_actual = [] # 実際この時間帯に使うユーザー
 
         CarUseTime.car_use_time_list.append(self)
-
-
-# ユーザーのリスト、カギのリストを元にユーザーが希望する理想の乗車時間体表を作成する
-def make_hope_time_table():
-    ret_arr = []
-
-    for user in CarUser.user_list:
-        hope_time = user.get_use_time_hope()
-        if hope_time is not None:
-            time_id = hope_time.get_id()
-            ret_arr.append(time_id)
-
-    return ret_arr
-
-
-def test():
-    time_not_use = CarUseTime("乗らない")
-    time_18h     = CarUseTime("18時")
-    time_19h     = CarUseTime("19時")
-
-    user_A = CarUser(name="Aさん", can_drive=True , use_time_hope=time_18h) # 18時希望 運転可
-    user_B = CarUser(name="Bさん", can_drive=True , use_time_hope=time_18h) # 18時希望 運転可
-    user_C = CarUser(name="Cさん", can_drive=True , use_time_hope=time_19h) # 19時希望 運転可
-    user_D = CarUser(name="Dさん", can_drive=False, use_time_hope=time_18h) # 18時希望 運転不可
-    user_E = CarUser(name="Eさん", can_drive=False, use_time_hope=time_19h) # 19時希望 運転不可
-    user_F = CarUser(name="Fさん", can_drive=False, use_time_hope=time_18h) # 18時希望 運転不可
-    user_G = CarUser(name="Gさん", can_drive=False, use_time_hope=time_18h) # 18時希望 運転不可
-
-    car_A = Car(name="車A", capacity=3)
-    car_B = Car(name="車B", capacity=5)
-
-    car_key_A1 = CarKey("カギA1", car_A, can_use_drive=True)
-    car_key_A2 = CarKey("カギA2", car_A, can_use_drive=True)
-    car_key_B1 = CarKey("カギB1", car_B, can_use_drive=True)
-    car_key_B2 = CarKey("カギB2", car_B, can_use_drive=True)
-
-
-    print("車利用者リスト")
-    for user in CarUser.user_list:
-        print(f"{user.name}: {user.get_id()}")
-
-    print("---")
-
-    print(f"車のカギリスト")
-    for key in CarKey.key_list:
-        print(key.name)
-
-    print("---")
-
-    print(f"車Ａのカギリスト")
-    for key in car_A.key_list:
-        print(key.name)
-
-    print("---")
-
-    print(f"車Ｂのカギリスト")
-    for key in car_B.key_list:
-        print(key.name)
-
-    print("---")
-    user = CarUser.get_user_instance(user_id=1)
-    u_name = user.get_name()
-    ht = user.get_use_time_hope()
-    ht_id = ht.get_id()
-    print(f"{u_name}の希望時間ID:{ht_id}")
-
-    print("---")
-    print("理想の希望時間表")
-    hope_time_table = make_hope_time_table()
-    print(hope_time_table)
-
-    return
-
-if __name__ == "__main__":
-    test()
-

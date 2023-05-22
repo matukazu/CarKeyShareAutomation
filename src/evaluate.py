@@ -1,72 +1,63 @@
-
-# 評価関数を作る
-
-import numpy as np
-
-from .const import KEYS_AMOUNT, USER_AMOUNT
-from .individual import models as md
-from .MyClass import CarUser, make_hope_time_table
-
-
-
-
+from MyClass import CarUser
+from individual import convert_to_tables_dict
 
 # 評価関数の本体
-# 値を小さくしたいものを計算
 def evaluate(individual):
+    tables = convert_to_tables_dict(individual)
 
-    keys_mat, time_slots_mat = md.arr_to_mats(individual)
+    ct_table = tables["car-time"]
+    ku_table = tables["key-user"]
+    ut_table = tables["user-time"]
 
-    # 優先度 高い
-    # ユーザーの希望乗車時間帯と同じ
-    how_not_assign_hope_time = calc_ratio_not_assign_hope_time(time_slots_mat)
+    eval1 = find_total_user_cant_drive_have_driving_key(ku_table) # 最小化 優先度大
+    eval2 = calc_ratio_not_assign_hope_time(ut_table) # 最小化 優先度中
 
-    # 優先度 低い
-    # カギは1人2つ以上持たない
-    how_far_from_ideal_having_key = calc_distance_from_ideal_key_ave(keys_mat)
-
-    # [ ] 同じ時間帯を希望する人が、その時間帯に使う車の予備カギを持つ
-    # TODO: 優先順位低いので割愛 プロトタイプが出来たら追加する
-
-    eval_list = [
-        how_not_assign_hope_time,
-        how_far_from_ideal_having_key
-    ]
+    eval_list = [eval1, eval2]
 
     return eval_list
 
-def calc_distance_from_ideal_key_ave(keys_mat):
-    """カギを持っている人たちを対象とした所持数の平均値から理想値である１までの差を算出する"""
 
-    IDEAL_KEY_AVE = 1
+def find_total_user_cant_drive_have_driving_key(ku_arr):
+    """カギ-カギ持ち担当者の1次元配列を元に、運転できないユーザーで運転用カギを持っている人数を返す"""
+    result = 0 # 運転手用のカギを運転可能者以外が持っている数
 
-    # 1を含む行だけ抜き出す = カギを持っている人を抜き出す
-    user_have_keys_mat = keys_mat[np.any(keys_mat == 1, axis=1)]
+    for k_id, u_id in enumerate(ku_arr):
+        # カギIndexが偶数のときのみ運転手用のカギ → カギIndex
+        # カギIndexに対応するUserIDからユーザーインスタンス取得
+        if k_id % 2 == 0 :
+            user = CarUser.get_user_instance(user_id=u_id)
 
-    # 行ごとに合計し1次元配列にする = 1人ごとのカギの所持数合計を計算する
-    user_key_amount_arr = np.sum(user_have_keys_mat, axis=1)
+            # ユーザーが運転できなかったら＋1
+            if user.get_can_drive() != True:
+                result += 1
 
-    # 1次元配列の平均を取る = カギを持っている人の平均所持数を計算する
-    average_have_key = np.mean(user_key_amount_arr)
+    return result
 
-    # 理想値との差を取る
-
-    return abs(average_have_key - IDEAL_KEY_AVE)
-
-def calc_ratio_not_assign_hope_time(times_mat):
+def calc_ratio_not_assign_hope_time(ut_arr):
     """希望乗車時間にアサイン出来なかった人の割合を計算する。
     希望する乗車時間帯表と個体から生成した乗車時間帯表を比べて、異なっている割合を返す。"""
-    hope_time_table = make_hope_time_table()
+    
+    ideal_ut_arr = make_hope_time_table()
 
-    total_elemets = times_mat.size
-    different_elements = np.count_nonzero(times_mat != hope_time_table)
-    different_ratio = different_elements / total_elemets
+    diff_count = 0
+    for i, j in zip(ideal_ut_arr, ut_arr):
+        if i is not j:
+            diff_count += 1
+    total_elements = len(ut_arr)
+
+    different_ratio = diff_count / total_elements
 
     return different_ratio
 
+# ユーザーのリスト、カギのリストを元にユーザーが希望する理想の乗車時間体表を作成する
+def make_hope_time_table():
+    ret_arr = []
 
+    for user in CarUser.user_list:
+        hope_time = user.get_use_time_hope()
+        if hope_time is not None:
+            time_id = hope_time.get_id()
+            ret_arr.append(time_id)
 
-
-
-
+    return ret_arr
 
