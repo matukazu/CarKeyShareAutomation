@@ -41,9 +41,7 @@ class CarUser(Base):
         ul = CarUser.user_list # ユーザーリストを掃く形で実装するとユーザーが増えたときに処理が重いのでやめた
         if len(ul) < user_id: # ex. 5人しかいないはずなのに6人目を指定した場合×
             return None
-
-        list_ind = user_id - 1 # 配列番号は0始まりなので調整
-        return ul[int(list_ind)]
+        return ul[int(user_id)]
 
     def get_use_time_hope(self):
         return self.use_time_hope
@@ -67,6 +65,7 @@ class Car(Base):
         ul = Car.car_list # リストを掃く形で実装すると増えたときに処理が重いのでやめた
         if len(ul) < car_id: # ex. 5人しかいないはずなのに6人目を指定した場合×
             return None
+        return ul[int(car_id)]
 
 
 
@@ -87,7 +86,7 @@ class CarKey(Base):
         ul = CarKey.key_list # リストを掃く形で実装すると増えたときに処理が重いのでやめた
         if len(ul) < key_id: # ex. 5人しかいないはずなのに6人目を指定した場合×
             return None
-
+        return ul[int(key_id)]
 
 class CarUseTime(Base):
     car_use_time_list = []
@@ -102,6 +101,7 @@ class CarUseTime(Base):
 
     @staticmethod
     def get_carusetime_instance(time_id):
-        ul = CarUseTime.time_list # リストを掃く形で実装すると増えたときに処理が重いのでやめた
+        ul = CarUseTime.car_use_time_list # リストを掃く形で実装すると増えたときに処理が重いのでやめた
         if len(ul) < time_id: # ex. 5人しかいないはずなのに6人目を指定した場合×
             return None
+        return ul[int(time_id)]
