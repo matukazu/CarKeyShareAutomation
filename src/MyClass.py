@@ -1,5 +1,5 @@
-# TODO: クラスインスタンスリストを作成する機能が重複しているので、Baseクラスに統合する
-
+# TODO: クラスインスタンスリストを作成する機能が重複している → Baseクラスに統合する
+# TODO：ID指定でクラスインスタンスを取得する機能が重複している → Baseクラスに統合
 
 # テンプレートクラス
 # IDの自動連番機能有
@@ -62,6 +62,14 @@ class Car(Base):
 
         Car.car_list.append(self)
 
+    @staticmethod
+    def get_car_instance(car_id):
+        ul = Car.car_list # リストを掃く形で実装すると増えたときに処理が重いのでやめた
+        if len(ul) < car_id: # ex. 5人しかいないはずなのに6人目を指定した場合×
+            return None
+
+
+
 class CarKey(Base):
     key_list = [] # すべての車のカギリスト
 
@@ -74,6 +82,12 @@ class CarKey(Base):
         CarKey.key_list.append(self)
         car.key_list.append(self) # 車クラス側のカギリストに追加
 
+    @staticmethod
+    def get_carkey_instance(key_id):
+        ul = CarKey.key_list # リストを掃く形で実装すると増えたときに処理が重いのでやめた
+        if len(ul) < key_id: # ex. 5人しかいないはずなのに6人目を指定した場合×
+            return None
+
 
 class CarUseTime(Base):
     car_use_time_list = []
@@ -85,3 +99,9 @@ class CarUseTime(Base):
         self.users_actual = [] # 実際この時間帯に使うユーザー
 
         CarUseTime.car_use_time_list.append(self)
+
+    @staticmethod
+    def get_carusetime_instance(time_id):
+        ul = CarUseTime.time_list # リストを掃く形で実装すると増えたときに処理が重いのでやめた
+        if len(ul) < time_id: # ex. 5人しかいないはずなのに6人目を指定した場合×
+            return None
