@@ -25,7 +25,7 @@ def view():
     for k_ind, u_ind in enumerate(ku_table):
         key = CarKey.get_carkey_instance(key_id=k_ind)
         user = CarUser.get_user_instance(user_id=u_ind)
-        print(f"・カギ「{key.get_name()}」は「{user.get_name()}」")
+        print(f"・カギ「{key.get_name()}」は「{user.get_name()}」さん")
 
     print("===乗車時間===")
     for u_ind, t_ind in enumerate(ut_table):
