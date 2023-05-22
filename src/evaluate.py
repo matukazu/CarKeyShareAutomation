@@ -1,6 +1,11 @@
 from MyClass import CarUser
 from individual import convert_to_tables_dict
 
+# 評価関数の重みづけ
+weights = (-10.0,
+           -1.0)
+
+
 # 評価関数の本体
 def evaluate(individual):
     tables = convert_to_tables_dict(individual)

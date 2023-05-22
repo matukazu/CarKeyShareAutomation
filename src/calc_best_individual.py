@@ -7,14 +7,14 @@ from deap import tools
 from deap import algorithms
 
 from individual import make_individual
-from evaluate import evaluate
+from evaluate import evaluate, weights
 
 
 # 最適な個体を計算して返す
 def calc_best_individual():
 
     #最小化問題として設定(-1.0で最小化、1.0で最大化問題)
-    creator.create("FitnessMin", base.Fitness, weights=(-10.0, -1.0))
+    creator.create("FitnessMin", base.Fitness, weights=weights)
 
     #個体の定義（list型と指定しただけで、中身の遺伝子は後で入れる）
     creator.create("Individual", list, fitness=creator.FitnessMin)
@@ -23,9 +23,6 @@ def calc_best_individual():
     #交叉、選択、突然変異などには、DEAPのToolbox内にある関数を利用
     toolbox = base.Toolbox()
     # # ランダムな個体の生成
-    # toolbox.register("attribute", make_individual, creator.Individual)
-    # #individualという関数を設定。それぞれの個体に含まれる2個の遺伝子をattributeにより決める
-    # toolbox.register("individual", make_individual)
     toolbox.register("individual", tools.initIterate, creator.Individual, make_individual)
     #集団の個体数を設定するための関数を準備
     toolbox.register("population", tools.initRepeat, list, toolbox.individual)
