@@ -1,5 +1,7 @@
-from MyClass import CarUser
+from MyClass import CarUser, Car, CarUseTime
 from individual import convert_to_tables_dict
+
+from individual import make_individual
 
 # 評価関数の重みづけ
 weights = (-10.0,
@@ -56,17 +58,47 @@ def calc_ratio_not_assign_hope_time(ut_arr):
 
 # ある時間帯に乗るユーザーの総数とその時間帯に使用する車の定員合計を比べる
 # 時間帯ごとの車の定員オーバーした数の合計を返す
-def find_user_amount_over_car_capacity(ct_arr, ut_arr):
+# TODO: めっちゃソースが汚いので可読性良くしたいとは思う
+def find_user_amount_over_car_capacity(ut_arr, ct_arr):
 
-    # ut_arrからある時間帯に乗る人数を取得する 時間帯ID：合計人数
-    
-    # ct_arrからある時間帯に使う車一覧を取得 時間帯ID：[車一覧]
-    # 車一覧を掃いて、車のインスタンスを取得 → 車の定員を取得 → 合計する → 時間帯ID：定員合計
-    
+    # 時間帯IDの数だけ下記のような辞書を作る
+    # {時間帯ID：{その時間に乗る合計人数: 値}, {その時間帯に使う車の定員合計: 値}}
+    dict_to_calc_over_capa = {}
+    USER_AMOUNT = "user_amount"
+    TOTAL_CAR_CAPACITY = "total_car_capacity"
+    for t_ind in range(len(CarUseTime.car_use_time_list)):
+        if f"{t_ind}" not in dict_to_calc_over_capa:
+            dict_to_calc_over_capa[f"{t_ind}"] = {}
+
+        dict_to_calc_over_capa[f"{t_ind}"] = {
+            USER_AMOUNT       : 0,
+            TOTAL_CAR_CAPACITY: 0
+        }
+
+    # ut_arrからある時間帯に乗る人数合計を取得する
+    for t_ind in list(set(ut_arr)): # ut_arrの要素は時間帯ID → 重複要素を削除してから繰り返す
+        user_amount = count_occurrences(ut_arr, t_ind)
+
+        dict_to_calc_over_capa[f"{t_ind}"][USER_AMOUNT] = user_amount
+
+    # ct_arrからある時間帯に使う車一覧を取得し、各時間帯毎の定員合計を取得
+    for c_ind, t_ind in enumerate(ct_arr):
+        car = Car.get_car_instance(car_id=c_ind)
+
+        dict_to_calc_over_capa[f"{t_ind}"][TOTAL_CAR_CAPACITY] += car.get_capacity()
+
     # 時間帯IDごとに 合計人数 - 定員合計を計算 値が0より大きいとき定員オーバーしたとして記録 → 時間帯ID：オーバー人数
-    # すべての時間帯のオーバー人数を合計して返す
+    sum_over_num = 0  # すべての時間帯のオーバー人数合計
+    for key, dict in dict_to_calc_over_capa.items():
+        over_num = 0
+        hoge = dict[USER_AMOUNT] - dict[TOTAL_CAR_CAPACITY]
+        if hoge > 0:
+            over_num = hoge
 
-    return
+        dict_to_calc_over_capa[key]["over_num"] = over_num
+        sum_over_num += over_num
+
+    return sum_over_num
 
 # ユーザーのリスト、カギのリストを元にユーザーが希望する理想の乗車時間体表を作成する
 def make_hope_time_table():
@@ -87,3 +119,22 @@ def count_occurrences(arr, value):
         if item == value:
             count += 1
     return count
+
+if __name__ == "__main__":
+
+    indiv = make_individual()
+    tables = convert_to_tables_dict(indiv)
+
+    ct_arr = tables["car-time"]
+    ku_arr = tables["key-user"]
+    ut_arr = tables["user-time"]
+
+    # print(indiv)
+    print("-car-time-")
+    print(ct_arr)
+    # print(ku_arr)
+    print("-user-time-")
+    print(ut_arr)
+
+    result = find_user_amount_over_car_capacity(ut_arr, ct_arr)
+    print(result)
