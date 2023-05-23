@@ -39,7 +39,7 @@ initial_dict = {
         "arr_total": len(Car.car_list), # 車の数だけ要素作る
         "elem_min": 1,
         "elem_max": len(CarUseTime.car_use_time_list) - 1, # 車をどの時間帯か振る → 最大時間帯ID＝リストIndex以下
-        "can_duplicate": False
+        "can_duplicate": True
     },
 
     "key-user":{
