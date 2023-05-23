@@ -80,3 +80,10 @@ def make_hope_time_table():
 
     return ret_arr
 
+# 引数で与えられた値が、引数で与えられた配列中に何個含まれるか探して返す
+def count_occurrences(arr, value):
+    count = 0
+    for item in arr:
+        if item == value:
+            count += 1
+    return count
