@@ -5,8 +5,8 @@ from individual import make_individual
 
 # 評価関数の重みづけ
 weights = (-10.0,
-           -1.0)
-
+           -1.0,
+           -10.0)
 
 # 評価関数の本体
 def evaluate(individual):
@@ -18,8 +18,9 @@ def evaluate(individual):
 
     eval1 = find_total_user_cant_drive_have_driving_key(ku_table) # 最小化 優先度大
     eval2 = calc_ratio_not_assign_hope_time(ut_table) # 最小化 優先度中
+    eval3 = find_user_amount_over_car_capacity(ut_table, ct_table) # 最小化 優先度大
 
-    eval_list = [eval1, eval2]
+    eval_list = [eval1, eval2, eval3]
 
     return eval_list
 
@@ -120,21 +121,22 @@ def count_occurrences(arr, value):
             count += 1
     return count
 
-if __name__ == "__main__":
+# テスト用に使ってた
+# if __name__ == "__main__":
 
-    indiv = make_individual()
-    tables = convert_to_tables_dict(indiv)
+#     indiv = make_individual()
+#     tables = convert_to_tables_dict(indiv)
 
-    ct_arr = tables["car-time"]
-    ku_arr = tables["key-user"]
-    ut_arr = tables["user-time"]
+#     ct_arr = tables["car-time"]
+#     ku_arr = tables["key-user"]
+#     ut_arr = tables["user-time"]
 
-    # print(indiv)
-    print("-car-time-")
-    print(ct_arr)
-    # print(ku_arr)
-    print("-user-time-")
-    print(ut_arr)
+#     # print(indiv)
+#     print("-car-time-")
+#     print(ct_arr)
+#     # print(ku_arr)
+#     print("-user-time-")
+#     print(ut_arr)
 
-    result = find_user_amount_over_car_capacity(ut_arr, ct_arr)
-    print(result)
+#     result = find_user_amount_over_car_capacity(ut_arr, ct_arr)
+#     print(result)
