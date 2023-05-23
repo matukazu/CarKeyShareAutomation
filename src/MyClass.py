@@ -67,6 +67,8 @@ class Car(Base):
             return None
         return ul[int(car_id)]
 
+    def get_capacity(self):
+        return self.capacity
 
 
 class CarKey(Base):
