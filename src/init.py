@@ -36,23 +36,23 @@ car_key_C2 = CarKey("カギC2", car_C, can_use_drive=False)
 # 個体データ配列作成用
 initial_dict = {
     "car-time":{
-        "arr_total": len(Car.car_list),
+        "arr_total": len(Car.car_list), # 車の数だけ要素作る
         "elem_min": 1,
-        "elem_max": len(Car.car_list),
+        "elem_max": len(CarUseTime.car_use_time_list), # 車をどの時間帯か振る → 時間帯IDの最大値以下
         "can_duplicate": False
     },
 
     "key-user":{
-        "arr_total": len(CarKey.key_list),
+        "arr_total": len(CarKey.key_list), # カギの個数分だけ要素作る
         "elem_min": 1,
-        "elem_max": len(CarKey.key_list),
+        "elem_max": len(CarUser.user_list), # ユーザーに配る → ユーザーの最大ID以下
         "can_duplicate": False
     },
 
     "user-time":{
-        "arr_total": len(CarUser.user_list),
+        "arr_total": len(CarUser.user_list), # 利用者の人数分だけ要素作る
         "elem_min": 1,
-        "elem_max": len(CarUser.user_list),
+        "elem_max": len(CarUseTime.car_use_time_list), # 誰がどの時間帯か振る → 時間帯IDの最大値以下
         "can_duplicate": True
     }
 }
