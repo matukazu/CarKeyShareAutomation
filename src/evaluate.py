@@ -1,12 +1,13 @@
 from MyClass import CarUser, Car, CarUseTime
 from individual import convert_to_tables_dict
 
-from individual import make_individual
+# テスト用に使ってたやつ
+# from individual import make_individual
 
 # 評価関数の重みづけ
-weights = (-10.0,
-           -1.0,
-           -10.0)
+weights = (-5.0,
+           -5.0,
+           -1.0)
 
 # 評価関数の本体
 def evaluate(individual):
@@ -17,8 +18,8 @@ def evaluate(individual):
     ut_table = tables["user-time"]
 
     eval1 = find_total_user_cant_drive_have_driving_key(ku_table) # 最小化 優先度大
-    eval2 = calc_ratio_not_assign_hope_time(ut_table) # 最小化 優先度中
-    eval3 = find_user_amount_over_car_capacity(ut_table, ct_table) # 最小化 優先度大
+    eval2 = find_user_amount_over_car_capacity(ut_table, ct_table) # 最小化 優先度大
+    eval3 = calc_ratio_not_assign_hope_time(ut_table) # 最小化 優先度中
 
     eval_list = [eval1, eval2, eval3]
 

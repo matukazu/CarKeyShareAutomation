@@ -15,6 +15,9 @@ def view():
     print(ku_table)
     print(ut_table)
 
+    print("===最適個体の目的関数===")
+    print(fitness_vals)
+
     print("===車使用時間===")
     for c_ind, t_ind in enumerate(ct_table):
         car = Car.get_car_instance(car_id=c_ind)
