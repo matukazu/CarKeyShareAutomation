@@ -36,15 +36,15 @@ def calc_best_individual():
     toolbox.register("evaluate", evaluate)
 
     #乱数を固定
-    random.seed(64)
+    # random.seed(64)
     #何世代まで行うか
-    NGEN = 50
+    NGEN = 100
     #集団の個体数
-    POP = 80
+    POP = 100
     #交叉確率
-    CXPB = 0.9
+    CXPB = 0.6
     #個体が突然変異を起こす確率
-    MUTPB = 0.1
+    MUTPB = 0.5
 
     #集団は80個体という情報の設定
     pop = toolbox.population(n=POP)

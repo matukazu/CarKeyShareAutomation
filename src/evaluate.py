@@ -5,9 +5,9 @@ from individual import convert_to_tables_dict
 # from individual import make_individual
 
 # 評価関数の重みづけ
-weights = (-5.0,
-           -5.0,
-           -1.0)
+weights = (-10.0,
+           -10.0,
+           -20.0)
 
 # 評価関数の本体
 def evaluate(individual):
